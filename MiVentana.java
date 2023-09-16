@@ -22,10 +22,15 @@ class EventoBotonPulsado implements ActionListener {
         System.out.println(buttonText.equals(" 1 "));
         
         if(buttonText.equals(" = ")){
-            ventana.resultado = textField.getText();
+            Resolver resolver = new Resolver();
+            double r = resolver.evaluarExpresion(textField.getText());
+            System.out.println(r);
+            ventana.resultado = Double.toString(r);
+            textField.setText(ventana.resultado);
+
 
         }
-        else if(buttonText.equals(" 1 ")){
+        else if(buttonText.equals(" CE ")){
             textField.setText("ya" + ventana.resultado + "ya");
             System.out.println(ventana.resultado);
 
@@ -47,7 +52,7 @@ public class MiVentana extends JFrame {
 
     Container contentPane;
 
-    String resultado;
+    String resultado = "0";
 
     JTextField textField;
 
@@ -62,14 +67,18 @@ public class MiVentana extends JFrame {
         // Definimos el modelo de layout para posicionar los elementos en el panel principal
         contentPane.setLayout(new GridBagLayout());
 
-        // Definimos las restricciones para el posicionamiento de los elementos
 
         crearCuadroTexto();
         crearBotones();
         crearBotonIgual();
 
-        // No es necesario inicializar 'resultado' aquí
 
+    }
+
+    private double obtenerResultado(String resultado){
+        Resolver resolver = new Resolver();
+        double r = resolver.evaluarExpresion(resultado);
+        return r;
     }
 
     private void crearBotonIgual() {
@@ -80,16 +89,20 @@ public class MiVentana extends JFrame {
     }
 
     private void crearBotones() {
+
+        String[] numeros = {"1", "2", "3", "4", "5", "6", "7", "8","9"};
+        for (int i = 0; i < numeros.length; i++) {
+            
+        
         // Creamos un botón personalizado usando la clase Boton
-        Boton boton1 = new Boton(" 1 ", 100, 50, 0, 1);
-        Boton boton2 = new Boton(" 2 ", 100, 50, 1, 1);
+        Boton boton1 = new Boton(numeros[i], 100, 50, i/3, i%3 + 1);
+
 
         // Agregamos el botón personalizado al panel principal
         contentPane.add(boton1, boton1.constraintsB);
-        contentPane.add(boton2, boton2.constraintsB);
 
         boton1.addActionListener(new EventoBotonPulsado(textField, this)); // Pasamos la referencia a la ventana
-        boton2.addActionListener(new EventoBotonPulsado(textField, this)); // Pasamos la referencia a la ventana
+        }// Pasamos la referencia a la ventana
 
     }
 

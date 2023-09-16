@@ -1,10 +1,8 @@
 import java.util.Stack;
 
 public class Resolver {
-        public static double evaluarExpresion(String expresion) {
+        public  double evaluarExpresion(String expresion) {
         // Eliminar espacios en blanco de la expresión
-        expresion = expresion.replaceAll("\\s+", "");
-
         // Crear una pila para operadores y otra para operandos
         Stack<Double> operandos = new Stack<>();
         Stack<Character> operadores = new Stack<>();
@@ -16,6 +14,8 @@ public class Resolver {
 
         // Dividir la expresión en tokens (números, operadores y paréntesis)
         String[] tokens = expresion.split("(?<=[-+*/()])|(?=[-+*/()])");
+
+        System.out.println(tokens);
 
         for (String token : tokens) {
             if (token.isEmpty()) {
@@ -111,5 +111,7 @@ public class Resolver {
                 throw new IllegalArgumentException("Operador no válido");
         }
     }
+     
+
 
 }
