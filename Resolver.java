@@ -13,7 +13,7 @@ public class Resolver {
         final int PRIORIDAD_MULTIPLICACION_DIVISION = 2;
 
         // Dividir la expresión en tokens (números, operadores y paréntesis)
-        String[] tokens = expresion.split("(?<=[-+*/()])|(?=[-+*/()])");
+        String[] tokens = expresion.split("(?<=[+*/^()])|(?=[+*/^()])");
 
         System.out.println(tokens);
 
@@ -73,11 +73,12 @@ public class Resolver {
     private static int obtenerPrioridad(char operador) {
         switch (operador) {
             case '+':
-            case '-':
                 return 1;
             case '*':
             case '/':
                 return 2;
+            case '^':
+                return 3;
             default:
                 return 0; // Para otros caracteres o paréntesis
         }

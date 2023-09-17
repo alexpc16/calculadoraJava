@@ -22,23 +22,47 @@ class EventoBotonPulsado implements ActionListener {
         System.out.println(buttonText.equals(" 1 "));
         
         if(buttonText.equals(" = ")){
-            Resolver resolver = new Resolver();
-            double r = resolver.evaluarExpresion(textField.getText());
+            ResolverExpresion resolver = new ResolverExpresion();
+            double r = ResolverExpresion.evaluar(textField.getText());
             System.out.println(r);
             ventana.resultado = Double.toString(r);
             textField.setText(ventana.resultado);
-
-
         }
-        else if(buttonText.equals(" CE ")){
-            textField.setText("ya" + ventana.resultado + "ya");
+        else if(buttonText.equals("raiz")){
+            double ra = ventana.calcularRaiz(textField.getText());
+            ventana.resultado = Double.toString(ra);
+            textField.setText(ventana.resultado);
+        }
+
+        else if(buttonText.equals("ANS")){
+            textField.setText(textField.getText() +  ventana.resultado );
             System.out.println(ventana.resultado);
 
         }
-        else if(buttonText.equals(" 2 ")){
+
+        else if(buttonText.equals("CE")){
+            String text = textField.getText();
+            String correccion = text.substring(0,text.length()-1);
+
+            textField.setText(correccion);
+
+
+        }
+
+
+        else if(buttonText.equals("CA")){
+            textField.setText("");
+            ventana.resultado = "";
+
+
+
+        }
+
+       else if(buttonText.equals("C")){
             textField.setText("");
 
         }
+
         else{
 
             textField.setText(textField.getText() + buttonText);
@@ -52,7 +76,7 @@ public class MiVentana extends JFrame {
 
     Container contentPane;
 
-    String resultado = "0";
+    String resultado = "";
 
     JTextField textField;
 
@@ -67,35 +91,21 @@ public class MiVentana extends JFrame {
         // Definimos el modelo de layout para posicionar los elementos en el panel principal
         contentPane.setLayout(new GridBagLayout());
 
-
         crearCuadroTexto();
         crearBotones();
-        crearBotonIgual();
 
-
-    }
-
-    private double obtenerResultado(String resultado){
-        Resolver resolver = new Resolver();
-        double r = resolver.evaluarExpresion(resultado);
-        return r;
-    }
-
-    private void crearBotonIgual() {
-        Boton botonIgual = new Boton(" = ", 100, 50, 2, 2);
-        contentPane.add(botonIgual, botonIgual.constraintsB);
-
-        botonIgual.addActionListener(new EventoBotonPulsado(textField, this)); // Pasamos la referencia a la ventana
     }
 
     private void crearBotones() {
 
-        String[] numeros = {"1", "2", "3", "4", "5", "6", "7", "8","9"};
+        String[] numeros = {".","0", " = ", "*", "1", "2", "3", "/", "4", "5", "6", "-",  "7", "8","9","+", "(", ")", "^", "ANS", "CA", "CE","C","raiz"};
         for (int i = 0; i < numeros.length; i++) {
             
-        
+        int col =  i % 4 ;
+        int row =  6 - i / 4;
+         
         // Creamos un botón personalizado usando la clase Boton
-        Boton boton1 = new Boton(numeros[i], 100, 50, i/3, i%3 + 1);
+        Boton boton1 = new Boton(numeros[i], 100, 50, col , row );
 
 
         // Agregamos el botón personalizado al panel principal
@@ -119,8 +129,20 @@ public class MiVentana extends JFrame {
         constraints.gridwidth = 3; // Se expande para ocupar 4 columnas
         constraints.fill = GridBagConstraints.HORIZONTAL; // Expandir horizontalmente
 
-        textField.setBorder(new EmptyBorder(10, 20, 30, 40));
+        textField.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         contentPane.add(textField, constraints);
+    }
+
+    public double calcularRaiz(String expresion){
+
+        ResolverExpresion resolver = new ResolverExpresion();
+        double r = resolver.evaluar(expresion);
+    
+
+        double raiz = Math.sqrt(r);
+
+        return raiz;
+
     }
 }
